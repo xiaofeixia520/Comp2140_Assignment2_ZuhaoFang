@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.util.concurrent.LinkedTransferQueue;
 
 /*
  * A2Q1SortingTemplate
@@ -142,17 +143,17 @@ public class A2Q1SortingTemplate {
 				checkArray(array, "Merge sort");
 		    } else if ( whichSort == QUICK_SORT ) {
 				start = System.nanoTime();
-				quickSort( array );
+				//quickSort( array );
 				stop = System.nanoTime();
 				checkArray(array, "Quick sort");
 		    } else if ( whichSort == HYBRID_QUICK_SORT ) {
 				start = System.nanoTime();
-				hybridQuickSort( array );
+				//hybridQuickSort( array );
 				stop = System.nanoTime();
 				checkArray(array, "Hybrid quick sort");
 		    } else if ( whichSort == SHELL_SORT ) {
 				start = System.nanoTime();
-				shellSort( array );
+				//shellSort( array );
 				stop = System.nanoTime();
 				checkArray(array, "Shell sort");
 		    }
@@ -268,34 +269,125 @@ public class A2Q1SortingTemplate {
 	 ***********************************************************************/
 
 	private static void insertionSort(int[] array, int start, int end){
-
-		for(int i = start + 1; i< end; i++){
-			int j = i;
-
-			while(j > 0 && array[j] < array[j -1]){
-				int temp = array[j];
-				array[j] = array[j - 1];
-				array[j - 1] = temp;
-				--j;
+		for(int i = start; i < end - 1; i++){
+			for(int j = i + 1; j > start ; j--){
+				if(array[j] < array[j - 1]){
+					int temp = array[j - 1];
+					array[j - 1] = array[j];
+					array[j]= temp;
+				}
 			}
 		}
 	}
 
 	public static void insertionSort(int[] array){
 
-		for(int i = 1; i < array.length;i++ ){
-			int j = 1;
-			while(j > 0 && array[j] < array[j -1]) {
-				int temp = array[j];
-				array[j] = array[j - 1];
-				array[j - 1] = temp;
-				--j;
+		for(int i = 0 ; i < array.length - 1 ; i++){
+			for(int j = i + 1 ; j > 0 ; j--){
+				if(array[j] < array[j - 1]){
+					int temp = array[j - 1];
+					array[j - 1] = array[j];
+					array[j]= temp;
+				}
 			}
 		}
 	}
 
 	public static void bubbleSort(int[] array){
-		
+		for(int i = 0; i < array.length; i++){
+			for(int j = 0;j < array.length - i - 1; j++){
+				if(array[j] > array[j + 1]){
+					int temp = array[j];
+					array[j] = array[j + 1];
+					array[j + 1] = temp;
+				}
+			}
+		}
 	}
+
+	public static void selectionSort(int[] array){
+		for(int i = 0; i < array.length - 1; i++){
+			for(int j = i + 1; j < array.length; j++){
+
+				if(array[j] < array[i]){
+					int temp = array[i];
+					array[i] = array[j];
+					array[j] = temp;
+				}
+
+			}
+		}
+	}
+
+	private static int findMin(int[] array, int start, int end){
+		int position = -1;
+
+		for(int i = start; i < end; i++){
+			for(int j = i + 1; j < end; j++){
+
+				if(array[j] < array[i]){
+					position = j;
+				}
+
+			}
+		}
+		return position;
+	}
+
+	public static void mergeSort(int[] array){
+		mergeSort(array,0, array.length - 1);
+	}
+
+	private static void mergeSort(int[] array, int start, int end){
+		int med = 0;
+
+		if(start < end){
+			med = (start + end) / 2;
+
+			mergeSort(array , start , med);
+			mergeSort(array , med + 1 , end);
+			merge(array , start , med , end);
+		}
+	}
+
+	private static void merge(int[] array, int start, int mid, int end){
+		int arraySize = end - start + 1;
+		int mergePos = 0;
+		int leftPos = 0;
+		int rightPos = 0;
+		int[] tempArray = new int[arraySize];
+
+		leftPos = start;
+		rightPos = mid + 1;
+
+		while(leftPos <= mid && rightPos <= end){
+			if(array[leftPos] <= array[rightPos]){
+				tempArray[mergePos] = array[leftPos];
+				leftPos++;
+			}else{
+				tempArray[mergePos] = array[rightPos];
+				rightPos++;
+			}
+			mergePos++;
+		}
+
+		while(leftPos <= mid){
+			tempArray[mergePos] = array[leftPos];
+			leftPos++;
+			mergePos++;
+		}
+
+		while(rightPos <= end){
+			tempArray[mergePos] = array[rightPos];
+			rightPos++;
+			mergePos++;
+		}
+
+		for(mergePos = 0; mergePos < arraySize; mergePos++){
+			array[start + mergePos] = tempArray[mergePos];
+		}
+
+	}
+
 
 } // end class A2Q1SortingTemplate
