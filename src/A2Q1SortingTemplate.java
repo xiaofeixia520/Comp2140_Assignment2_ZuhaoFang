@@ -143,7 +143,7 @@ public class A2Q1SortingTemplate {
 				checkArray(array, "Merge sort");
 		    } else if ( whichSort == QUICK_SORT ) {
 				start = System.nanoTime();
-				//quickSort( array );
+				quickSort( array );
 				stop = System.nanoTime();
 				checkArray(array, "Quick sort");
 		    } else if ( whichSort == HYBRID_QUICK_SORT ) {
@@ -153,7 +153,7 @@ public class A2Q1SortingTemplate {
 				checkArray(array, "Hybrid quick sort");
 		    } else if ( whichSort == SHELL_SORT ) {
 				start = System.nanoTime();
-				//shellSort( array );
+				shellSort( array );
 				stop = System.nanoTime();
 				checkArray(array, "Shell sort");
 		    }
@@ -268,6 +268,13 @@ public class A2Q1SortingTemplate {
 	 * Part start
 	 ***********************************************************************/
 
+
+	/******************************************************
+	 *  insertionSort method
+	 * @param array : input array
+	 * @param start : begging sorting position
+	 * @param end : end of sorting position
+	 */
 	private static void insertionSort(int[] array, int start, int end){
 		for(int i = start; i < end - 1; i++){
 			for(int j = i + 1; j > start ; j--){
@@ -293,6 +300,11 @@ public class A2Q1SortingTemplate {
 		}
 	}
 
+	/****************************************************
+	 * Bubble Sort method
+	 * @param array : input array
+	 ****************************************************/
+
 	public static void bubbleSort(int[] array){
 		for(int i = 0; i < array.length; i++){
 			for(int j = 0;j < array.length - i - 1; j++){
@@ -304,6 +316,11 @@ public class A2Q1SortingTemplate {
 			}
 		}
 	}
+
+	/******************************************
+	 * selection Sort method
+	 * @param array : input array
+	 ******************************************/
 
 	public static void selectionSort(int[] array){
 		for(int i = 0; i < array.length - 1; i++){
@@ -333,6 +350,11 @@ public class A2Q1SortingTemplate {
 		}
 		return position;
 	}
+
+	/*******************************************
+	 * merge sort method
+	 * @param array : input array
+	 *******************************************/
 
 	public static void mergeSort(int[] array){
 		mergeSort(array,0, array.length - 1);
@@ -389,5 +411,122 @@ public class A2Q1SortingTemplate {
 
 	}
 
+	/************************************
+	 * Quick sort method
+	 ************************************/
+
+
+	public static void quickSort(int[] array){
+		quickSort(array , 0 , array.length - 1);
+	}
+
+
+	private static void quickSort(int[] array , int start , int end){
+		if(start >= end){
+			return;
+		}
+		int pivot = medianOfthree(array , start , end);
+		int partition = partition(array , start , end , pivot);
+
+		quickSort(array , start , partition ) ;
+		quickSort(array , partition + 1 , end);
+
+	}
+
+	private static int medianOfthree(int[] array , int start , int end){
+		int pivot = start + ((end - 1) - start) / 2;
+		int temps = array[pivot];
+
+		// swap value in the array
+		if(array[start] > array[pivot]){
+			int temp = array[start];
+			array[start] = array[pivot];
+			array[pivot] = temp;
+		}else if(array[pivot] > array[end - 1]){
+			int temp = array[pivot];
+			array[pivot] = array[end - 1];
+			array[end - 1] = temp;
+		}else if(array[start] > array[end - 1]){
+			int temp = array[start];
+			array[start] = array[end - 1];
+			array[end - 1] = temp;
+		}
+
+		array[pivot] = array[end -1 ];
+		array[end - 1] = temps;
+		return array[end - 1];
+
+	}
+
+	private static int partition (int[] array , int start , int end , int pivot){
+		boolean done = false;
+		while(!done){
+			while (array[start] < pivot) {
+				start += 1;
+			}
+
+			while (pivot < array[end]){
+				end -= 1;
+			}
+
+			if(start >= end){
+				done = true;
+			}else{
+				int temp = array[start];
+				array[start] = array[end];
+				array[end] = temp;
+
+				start += 1;
+				end -= 1;
+			}
+		}
+		return end;
+	}
+
+
+
+	/*****************************************
+	 *Hybrid Recursive sort
+	 *****************************************/
+
+	public static void hybridQuickSort(int[] array , int start , int end){
+
+	}
+
+
+
+
+
+
+
+
+
+	/*******************************************
+	 * Shell sort
+	 *******************************************/
+
+	public static void shellSort(int[] array){
+		int gap = array.length;
+
+		while(true){
+			gap = gap / 2;
+
+			for(int i = 0 ; i < gap; i++){
+				for(int j = i + gap ; j < array.length ; j = j + gap){
+					int addLeft = array[i];
+					int compareLeft = j - gap;
+
+					while(compareLeft >= 0 && array[compareLeft] > addLeft){
+						array[compareLeft + gap] = array[addLeft];
+						compareLeft = compareLeft - gap;
+					}
+					array[compareLeft + gap] = addLeft;
+				}
+			}
+			if(gap == 1){
+				break;
+			}
+		}
+	}
 
 } // end class A2Q1SortingTemplate
