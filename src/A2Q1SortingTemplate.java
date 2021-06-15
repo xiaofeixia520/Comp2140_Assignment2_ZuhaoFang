@@ -148,7 +148,7 @@ public class A2Q1SortingTemplate {
 				checkArray(array, "Quick sort");
 		    } else if ( whichSort == HYBRID_QUICK_SORT ) {
 				start = System.nanoTime();
-				//hybridQuickSort( array );
+				hybridQuickSort( array );
 				stop = System.nanoTime();
 				checkArray(array, "Hybrid quick sort");
 		    } else if ( whichSort == SHELL_SORT ) {
@@ -442,19 +442,19 @@ public class A2Q1SortingTemplate {
 			int temp = array[start];
 			array[start] = array[pivot];
 			array[pivot] = temp;
-		}else if(array[pivot] > array[end - 1]){
+		}else if(array[pivot] > array[end] ){
 			int temp = array[pivot];
-			array[pivot] = array[end - 1];
-			array[end - 1] = temp;
-		}else if(array[start] > array[end - 1]){
+			array[pivot] = array[end ];
+			array[end ] = temp;
+		}else if(array[start] > array[end ]){
 			int temp = array[start];
-			array[start] = array[end - 1];
-			array[end - 1] = temp;
+			array[start] = array[end ];
+			array[end ] = temp;
 		}
 
-		array[pivot] = array[end -1 ];
-		array[end - 1] = temps;
-		return array[end - 1];
+		array[pivot] = array[end];
+		array[end ] = temps;
+		return array[end ];
 
 	}
 
@@ -490,17 +490,27 @@ public class A2Q1SortingTemplate {
 	 *****************************************/
 
 	public static void hybridQuickSort(int[] array , int start , int end){
+		int sortingSize = (end ) - start;
+		if(start >= end){
+			return;
+		}
+
+		if (sortingSize < BREAKPOINT){
+			insertionSort(array , start , end);
+		}
+
+		//if (sortingSize >= BREAKPOINT){
+			int pivot = medianOfthree(array , start , end);
+			int partition = partition(array , start , end, pivot);
+			hybridQuickSort(array , start , partition - 1);
+			hybridQuickSort(array , partition + 1 , end);
+	//	}
 
 	}
 
-
-
-
-
-
-
-
-
+	public static void hybridQuickSort(int[] array){
+		hybridQuickSort(array , 0 , array.length - 1);
+	}
 	/*******************************************
 	 * Shell sort
 	 *******************************************/
