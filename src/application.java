@@ -8,34 +8,29 @@ public class application {
 
 
 
-    public static void main (String[] args){
-        Train theTrain = new Train();
-        TrainCar car = new TrainCar(20000 , 0 , 0 , false);
-        TrainCar car1 = new TrainCar(0,0,3000000 , false);
-        TrainCar car2 = new TrainCar(0,0,0,true);
-        TrainCar car3 = new TrainCar(0,200000000,0 , false);
-        TrainCar car4 = new TrainCar(100,0,0 , false);
-
-
-        theTrain.addAtAfter(car);
-        theTrain.addAtAfter(car1);
-        theTrain.addAtAfter(car2);
-        theTrain.addAtAfter(car3);
-        theTrain.addAtAfter(car4);
-        theTrain.addAtAfter(car4);
-        theTrain.addAtAfter(car4);
-        theTrain.addAtAfter(car4);
-        theTrain.addAtAfter(car4);
-        System.out.println(theTrain.toString());
-        int s = theTrain.drop("oil" , 1);
-        System.out.println(theTrain.toString());
-        System.out.println(s);
-
+    public static void main (String[] args) throws IOException{
+        System.out.println("Please enter the input file name (.txt files only):");
+        String inputFileName = getFileName() ;
+        getOutPut(readFile(inputFileName));
+        System.out.println("End of processing");
     }
 
+    public static void getOutPut(String[] inputFile){
+        Train theTrain = new Train();
+        for(int i = 0; i < validElementAtString(inputFile) ; i++){
 
+            if (inputFile[i].indexOf("PICKUP") != -1){
+                System.out.println("Processing command: " + inputFile[i]);
+                String withoutChar = inputFile[i].replace("PICKUP " , "");
+                int pickupNum = Integer.valueOf(withoutChar).intValue();
+                int engine = 0;
+                int addTrain = 0;
+                for(int j = 1 ; j < pickupNum ; j++){
 
-
+                }
+            }
+        }
+    }
 
 
     /***************************************************************
@@ -58,7 +53,7 @@ public class application {
      *****************************************************************/
 
     public static String[] readFile(String fileName) throws IOException{
-        String[] inputFile = new String[1000];
+        String[] inputFile = new String[100000];
         int count = 0;
 
         FileInputStream file = new FileInputStream(fileName);
