@@ -488,28 +488,24 @@ public class A2Q1SortingTemplate {
 	/*****************************************
 	 *Hybrid Recursive sort
 	 *****************************************/
-
-	public static void hybridQuickSort(int[] array , int start , int end){
-		int sortingSize = (end ) - start;
-		if(start >= end){
-			return;
-		}
-
-		if (sortingSize < BREAKPOINT){
-			insertionSort(array , start , end);
-		}
-
-		//if (sortingSize >= BREAKPOINT){
-			int pivot = medianOfthree(array , start , end);
-			int partition = partition(array , start , end, pivot);
-			hybridQuickSort(array , start , partition - 1);
-			hybridQuickSort(array , partition + 1 , end);
-	//	}
-
-	}
+     private static void hybridQuickSort(int[] a, int start,int end, int breakpoint ){
+    	if(end-start==2)
+    	{
+      	if(a[start]>a[start+1])
+        	swap(a,start,start+1);
+    	}
+    	else if(end-start<=breakpoint)
+    	{
+      		insertionSort(a);
+    	}
+    	else if(end-start>breakpoint)
+    	{
+      		quickSort(a);
+    	} 
+ 	}
 
 	public static void hybridQuickSort(int[] array){
-		hybridQuickSort(array , 0 , array.length - 1);
+		hybridQuickSort(array,0,array.length-1,BREAKPOINT);
 	}
 	/*******************************************
 	 * Shell sort
