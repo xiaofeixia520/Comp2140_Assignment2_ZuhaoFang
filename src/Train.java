@@ -79,30 +79,33 @@ public class Train {
      * @return return that droped element
      */
 
-    public Node dropFromFirst(int index){
+    public Node dropFromFirst(int index) {
         Node drop = head;
-        for(int i = 1; i < index ; i++){   // point to index that need drop
+        int count = 0;
+
+        while (count < index) {
+            if (drop == null){     //  if out of index of list, drop set to null and return
+                drop = null;
+                return drop;
+            } else {
+                if (drop == tail && !drop.showLink().equals("engine")) {
+                    tail = drop.previous;
+                    drop.previous.next = null;
+                    count++;
+                } else if (drop == head && !drop.showLink().equals("engine")) {
+                    head = drop.next;
+                    drop.next.previous = null;
+                    count++;
+                } else if (drop.showLink().equals("engine")) {
+                    drop = drop.next;
+                } else {
+                    drop.previous.next = drop.next;
+                    drop.next.previous = drop.previous;
+                    count++;
+                }
+            }
             drop = drop.next;
         }
-
-        if(drop == null){     //  if out of index of list, drop set to null and return
-            drop = null;
-            return drop;
-        }else{
-            if(drop == tail && !drop.showLink().equals("engine")){
-                tail = drop.previous;
-                drop.previous.next = null;
-            }else if(drop == head && !drop.showLink().equals("engine")){
-                head = drop.next;
-                drop.next.previous = null;
-            }else if(drop.showLink().equals("engine")){
-                return drop;
-            }else{
-                drop.previous.next = drop.next;
-                drop.next.previous = drop.previous;
-            }
-        }
-
         return drop;
     }
 
@@ -115,26 +118,29 @@ public class Train {
 
     public Node dropFromLast(int index){
         Node drop = tail;
-        for (int i = 1 ; i < index ; i++){        // point to index that need drop
-            drop = drop.previous;
-        }
-
-        if(drop == null ){  //  if out of index of list, drop set to null and return
-            drop = null;
-            return drop;
-        }else{
-            if(drop == tail && !drop.showLink().equals("engine")){
-                tail = drop.previous;
-                drop.previous.next = null;
-            }else if(drop == head && !drop.showLink().equals("engine")){
-                head = drop.next;
-                drop.next.previous = null;
-            }else if(drop.showLink().equals("engine")){
+        int count = 0;
+        while(count < index){
+            if(drop == null ){  //  if out of index of list, drop set to null and return
+                drop = null;
                 return drop;
             }else{
-                drop.previous.next = drop.next;
-                drop.next.previous = drop.previous;
+                if(drop == tail && !drop.showLink().equals("engine")){
+                    tail = drop.previous;
+                    drop.previous.next = null;
+                    count++;
+                }else if(drop == head && !drop.showLink().equals("engine")){
+                    head = drop.next;
+                    drop.next.previous = null;
+                    count++;
+                 }else if(drop.showLink().equals("engine")){
+                    drop = drop.previous;
+                }else{
+                    drop.previous.next = drop.next;
+                    drop.next.previous = drop.previous;
+                    count++;
+                }
             }
+            drop = drop.previous;
         }
         return drop;
     }
@@ -155,6 +161,60 @@ public class Train {
             current = current.next;
         }
         return theTrain;
+    }
+
+    /******************************
+     *
+     * @return return currently total count of Engine
+     *******************************/
+    public int totalEngine(){
+        Node current = head;
+        int totalEngine = 0;
+
+        while(current != null){
+            if(current.showLink().indexOf("engine") != -1){
+                totalEngine++;
+            }
+            current = current.next;
+        }
+        return totalEngine;
+    }
+
+    /*******************************
+     *
+     * @return return currently total count of cargo
+     */
+    public int totalCargo(){
+        Node current = head;
+        int totalCargo = 0;
+        while(current != null){
+            if(current.showLink().indexOf("oil") != -1 | current.showLink().indexOf("wheat") != -1 | current.showLink().indexOf("lumber") != -1){
+                totalCargo++;
+            }
+            current = current.next;
+        }
+        return totalCargo;
+    }
+
+    /****************************************
+     *
+     * @return return total value of train
+     * */
+    public int totalValue(){
+        Node current = head;
+        int totalValue = 0;
+        while(current != null){
+            if(current.showLink().indexOf("oil") != -1){
+                totalValue += current.data.getOil();
+            }else if(current.showLink().indexOf("wheat") != -1){
+                totalValue += current.data.getWheat();
+            }else if(current.showLink().indexOf("lumber") != -1){
+                totalValue += current.data.getLumber();
+            }
+            current = current.next;
+        }
+
+        return totalValue;
     }
 
 
